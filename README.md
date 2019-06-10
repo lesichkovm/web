@@ -36,10 +36,45 @@ Initialize registers itself under the $$ name.
 
 ## Methods ##
 
-### $.to(url) ###
+### $$.getHashParameter() ###
+Returns a hash parameter or NULL if not set
+
+### $$.getUrl() ###
+Returns the current URL
+
+### $$.getUrlParams() ###
+Returns a single query parameter or NULL if not set
+
+```javscript
+var name = $$.getUrlParam("name");
+alert("Hi" + (name==null ? "Stranger" : name));
+```
+
+### $$.getUrlParams() ###
+Returns the query parameters from the current URL
+
+### $$.getLanguage() ###
+Returns the language or 'en' if not set
+
+### $$.setLanguage(language) ###
+Sets the language
+
+### $$.getToken() ###
+Returns the authentication token or NULL
+
+### $$.setToken(token) ###
+Sets the authentication token. To remove set it to NULL
+
+### $$.getUser() ###
+Returns the authenticated user or NULL
+
+### $$.setUser(user) ###
+Sets the authenticated user. To remove set it to NULL
+
+### $$.to(url) ###
 Redirects to current webpage to the specified URL (relative or absolute)
 
-### $.ws(action, data) ###
+### $$.ws(action, data) ###
 Calls the API with the specified action and data. Returns a promise
 
 ```javscript
@@ -51,3 +86,13 @@ p.fail(function(error){ console.log(error) }); // Call failed
 
 p.always(function(){ }); // After call is completed
 ```
+### $$.log(message) ###
+Logs message to console, if debug is enabled
+
+## Publish Subscibe Methods ##
+
+### $.publish("event-name", data) ###
+
+### $.subscribe("event-name") ###
+
+### $.unsubscribe("event-name") ###
