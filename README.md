@@ -5,13 +5,20 @@ Initialize is a framework for buiding web applications.
 ## Installation ##
 
 1. Using CDN
+
 Add the following after JQuery
 
 ```html
+<script>
+  var APP_ID = "";      // Your APP unique ID
+  var WEBSITE_URL = ""; // Your website root URL
+  var API_URL = "";     // Your website API URL
+</script>
 <script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@1.0.0/initialize.js"></script>
 ```
 
 2. Manual
+
 Download the initialize.js library and add to your webpage after JQuery
 
 ```html
