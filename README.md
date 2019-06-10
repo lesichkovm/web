@@ -96,3 +96,21 @@ Logs message to console, if debug is enabled
 ### $.subscribe("event-name") ###
 
 ### $.unsubscribe("event-name") ###
+
+# Registry #
+
+The registry provides persistence across requests using Local Storage.
+
+## Methods ##
+
+### Registry.get(key) ###
+Gets a key from the registry
+
+### Registry.set(key, value, expires) ###
+Sets a key in the registry. Optional expiration time in seconds
+
+### Registry.remove(key) ###
+Removes a key from the registry
+
+### Registry.empty() ###
+Empties the registry
