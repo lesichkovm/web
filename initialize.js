@@ -29,6 +29,39 @@ $(function () {
     loadImages();
 });
 
+/* START: Publish-Subscribe */
+$(function ($) {
+    var o = $({});
+    $.subscribe = function () {
+        o.on.apply(o, arguments);
+    };
+    $.unsubscribe = function () {
+        o.off.apply(o, arguments);
+    };
+    $.publish = function () {
+        o.trigger.apply(o, arguments);
+    };
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+});
+/* END: Publish-Subscribe */
+
+/**
+ * Loads images with specified "data-src" attribute
+ */
 function loadImages() {
     $('img[data-src]').each(function () {
         var src = $(this).data('src');
