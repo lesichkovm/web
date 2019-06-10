@@ -1,4 +1,30 @@
 $(function () {
+    /* START: Initialize */
+    Config = new Config();
+    Registry = new Registry(Config.getUniqueId());
+    Helper = new Helper();
+    $$ = new Initialize();
+    /* END: Initialize */
+    
+    $('base').attr('href', Config.getRootUrl());
+
+    /* START: Check token */
+    $(document).ajaxSuccess(function (evt, jqXHR, settings) {
+        var json = jqXHR.responseJSON
+        if (typeof json !== "undefined") {
+            var status = json.status.toLowerCase();
+            if (status === "authenticationfailure" || status === "authentication_failed") {
+                var message = json.message.toLowerCase();
+                $$.setUser(null);
+                $$.setToken(null);
+                Registry.set('LoginError', message);
+                //$$.to('guest/auth/login.html?message=' + message);
+                $$.to('guest/home.html?message=' + message);
+            }
+        }
+    });
+    /* END: Check token */
+    
     loadWidgets();
     loadImages();
 });
@@ -26,13 +52,13 @@ function loadWidgets() {
 
 function Config() {
     this.getUniqueId = function () {
-        return 'MCXEV2S12THEZ';
+        return APP_ID;
     };
     this.getRootUrl = function () {
-        return 'http://website.com/website/';
+        return WEBSITE_URL;
     };
     this.getApiUrl = function () {
-        return 'http://website/website/api.php'; // Local proxy script to allow Ajax cross-domain
+        return API_URL; // Local proxy script to allow Ajax cross-domain
     };
 }
 
