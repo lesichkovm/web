@@ -324,9 +324,15 @@ function Initialize() {
                 data["Token"] = token;
             }
         }
+        var url = "";
+        if (Config.getApiUrl().endsWith('/')) {
+            url = Config.getApiUrl() + '?command=' + command + '&ts=' + Math.round(+new Date() / 1000);
+        } else {
+            url = Config.getApiUrl() + '/' + command + '/?ts=' + Math.round(+new Date() / 1000);
+        }
         var p = $.ajax({
             type: 'POST',
-            url: Config.getApiUrl() + '?command=' + command + '&ts=' + Math.round(+new Date() / 1000),
+            url: url,
             crossDomain: true,
             cache: false,
             dataType: 'jsonp',
