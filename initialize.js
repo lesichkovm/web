@@ -267,7 +267,7 @@ function Initialize() {
     };
 
     this.getUrlParam = function (parameter) {
-        var parameters = this.getCurrentUrlParams();
+        var parameters = this.getUrlParams();
         return typeof parameters[parameter] === "undefined" ? null : parameters[parameter];
     };
 
