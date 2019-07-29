@@ -18,8 +18,9 @@ $(function () {
                 $$.setUser(null);
                 $$.setToken(null);
                 Registry.set('LoginError', message);
+                $.publish('authentication_failed');
                 //$$.to('guest/auth/login.html?message=' + message);
-                $$.to('guest/home.html?message=' + message);
+                //$$.to('guest/home.html?message=' + message);
             }
         }
     });
