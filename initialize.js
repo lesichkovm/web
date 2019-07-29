@@ -315,11 +315,12 @@ function Initialize() {
         var queryString = Object.keys(data).map((key) => {
             return encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
         }).join('&');
-        if(data && data.length>0) {
-            window.location.href = url + '?' + queryString;
-        } else {
-            window.location.href = url;
-        }
+        
+        if (queryString.length > 0) {
+            url = url + '?' + queryString;
+        } 
+        
+        window.location.href = url;
         
         return false; // otherwise links will be triggered
     };
