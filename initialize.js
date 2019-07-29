@@ -312,13 +312,14 @@ function Initialize() {
         } else {
             var url = rtrim(Config.getRootUrl(), ['/']) + '/' + ltrim(url, ['/']);
         }
-        var queryString = Object.keys(data).map((key) => {
-            return encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
+        
+        var queryString = (typeof data === 'undefined') ? '' : Object.keys(data).map((key) => {
+           return encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
         }).join('&');
         
         if (queryString.length > 0) {
-            url = url + '?' + queryString;
-        } 
+            url = url + (url.indexOf('?') <0 ? '?' : '&') + queryString;
+        }
         
         window.location.href = url;
         
