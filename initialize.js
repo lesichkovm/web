@@ -313,7 +313,7 @@ function Initialize() {
             var url = rtrim(Config.getRootUrl(), ['/']) + '/' + ltrim(url, ['/']);
         }
         var queryString = Object.keys(data).map((key) => {
-            return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
+            return encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
         }).join('&');
         if(data && data.length>0) {
             window.location.href = url + '?' + queryString;
