@@ -246,7 +246,7 @@ function Initialize() {
      * @param {Object} value
      * @returns {Object}
      */
-    this.getUser = function (key) {
+    this.get = function (key) {
         return Registry.get(key);
     };
 
