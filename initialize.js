@@ -197,8 +197,8 @@ function Registry(namespace) {
      * @returns {void}
      */
     this.set = function (key, value, expires) {
-        console.log(key);
-        console.log(value);
+        // console.log(key);
+        // console.log(value);
         if (typeof value === "undefined") {
             value = null;
         }
@@ -238,9 +238,32 @@ function Registry(namespace) {
 function Initialize() {
     /* START: Public Scope */
     this.debug = true;
+    
+    /**
+     * Stores a key-value pair to the registry
+     *
+     * @param {String} key
+     * @param {Object} value
+     * @returns {Object}
+     */
+    this.getUser = function (key) {
+        return Registry.get(key);
+    };
 
     /**
-     * Returns the current URL
+     * Retrieves a key value from the registry
+     *
+     * @param {String} key
+     * @returns {Object}
+     */
+    this.set = function (key, value) {
+        return Registry.set(key, value);
+    };
+
+
+    /**
+     * Returns the current page URL
+     *
      * @returns {String}
      */
     this.getUrl = function () {
@@ -249,6 +272,7 @@ function Initialize() {
 
     /**
      * Returns the URL parameters
+     *
      * @returns {Array}
      */
     this.getUrlParams = function () {
@@ -267,12 +291,18 @@ function Initialize() {
         return p;
     };
 
+    /**
+     * Returns a single URL parameter
+     *
+     * @returns {String}
+     */
     this.getUrlParam = function (parameter) {
         var parameters = this.getUrlParams();
         return typeof parameters[parameter] === "undefined" ? null : parameters[parameter];
     };
 
     /**
+     * Returns the authenticated user
      * @returns {Array}
      */
     this.getUser = function () {
@@ -294,6 +324,12 @@ function Initialize() {
         return Registry.set('AuthToken', token);
     };
 
+    
+    /**
+     * Returns the authentication token
+     *
+     * @returns {Array}
+     */
     this.getToken = function () {
         return Registry.get('AuthToken')
     };
