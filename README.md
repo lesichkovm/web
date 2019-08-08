@@ -36,6 +36,14 @@ Initialize registers itself under the $$ name.
 
 ## Methods ##
 
+### $$.get(key) ###
+
+Returns a key from registry or NULL if not set
+
+### $$.set(key, value) ###
+
+Sets a key-value pair to registry or NULL if not set
+
 ### $$.getHashParameter() ###
 Returns a hash parameter or NULL if not set
 
