@@ -144,6 +144,8 @@ function Helper() {
 
 function Registry(namespace) {
     var namespace = typeof namespace === "undefined" ? '' : "@" + namespace;
+    var defaultPassword = '8pVbaKePV3beCUZYbKSfujzucbcD3eqyJvCAUgQL8PbYe3VmAMSKC9esx8jV8M7KegPsxkDTpUKvu2UenQyPPjsDf92XnjtZh5GJRz8bQHZngNGKenKZHDD8';
+    var password = (namespace=="") ? namespace : defaultPassword;
 
     function jsonDecode(json) {
         return JSON.parse(json);
@@ -227,6 +229,44 @@ function Registry(namespace) {
                 localStorage.removeItem(key);
             }
         }
+    };
+    
+    /**
+     * Encrypts an object to a string
+     * @return string
+     */
+    this.encrypt = function (obj) {
+        var jsonString = JSON.stringify(obj);
+
+        var result = [];
+        var passLen = password.length;
+        for (var i = 0; i < jsonString.length; i++) {
+            var passOffset = i % passLen;
+            var calAscii = (jsonString.charCodeAt(i) + password.charCodeAt(passOffset));
+            result.push(calAscii);
+        }
+        return JSON.stringify(result);
+    };
+    
+    /**
+     * Decrypts an string to the original object
+     * @return object
+     */
+    this.decrypt = function (encStr) {
+        var result = []; var str = '';
+        var codesArr = JSON.parse(encStr);
+        var passLen = password.length;
+        for (var i = 0; i < codesArr.length; i++) {
+            var passOffset = i % passLen;
+            var calAscii = (codesArr[i] - password.charCodeAt(passOffset));
+            result.push(calAscii);
+        }
+        for (var i = 0; i < result.length; i++) {
+            var ch = String.fromCharCode(result[i]); str += ch;
+        }
+
+        var result = JSON.parse(str);
+        return result;
     };
 }
 
@@ -386,6 +426,12 @@ function Initialize() {
             data: data
         });
         return p;
+    };
+    
+    this.enc = function(object, password) {
+    };
+    
+    this.dec = function(object, password) {
     };
 
     /**
