@@ -14,7 +14,7 @@ Add the following after JQuery
   var WEBSITE_URL = ""; // Your website root URL
   var API_URL = "";     // Your website API URL
 </script>
-<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@1.9.0/initialize.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.0.0/initialize.js"></script>
 ```
 
 2. Manual
