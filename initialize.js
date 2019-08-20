@@ -187,7 +187,7 @@ function Registry(namespace) {
             }
 
             var value = jsonDecode(value);
-            return this.decode(value);
+            return this.decrypt(value);
         } else {
             return null;
         }
@@ -210,7 +210,7 @@ function Registry(namespace) {
         if (value === null) {
             localStorage.removeItem(key);
         } else {
-            var encValue = this.encode(value);
+            var encValue = this.encrypt(value);
             localStorage.setItem(key, jsonEncode(encValue));
             var expiresTime = ((new Date()).getTime() + expires);
             var expires = new Date();
