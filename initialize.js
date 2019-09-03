@@ -402,8 +402,9 @@ function Initialize() {
         var options = (typeof options === 'undefined') ? {} : options;
         
         if(options.target === "_blank") {            
-            window.location.href = url;
-            window.open(url, '_blank', "resizable,scrollbars,status");
+            var link = $('<a />',{'href': url, 'target':'_blank', 'style':'display:none;'});
+            $('body').append(link);
+            link.get(0).click();
         } else {
             window.location.href = url;
         }
