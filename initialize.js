@@ -384,7 +384,7 @@ function Initialize() {
         return language;
     };
 
-    this.to = function (url, data) {
+    this.to = function (url, data, options) {
         if (url.match("^http://") || url.match("^https://")) {
             // External url
         } else {
@@ -399,7 +399,14 @@ function Initialize() {
             url = url + (url.indexOf('?') <0 ? '?' : '&') + queryString;
         }
         
-        window.location.href = url;
+        var options = (typeof options === 'undefined') ? {} : options;
+        
+        if(options.target === "_blank") {            
+            window.location.href = url;
+            window.open(url, '_blank', "resizable,scrollbars,status");
+        } else {
+            window.location.href = url;
+        }
         
         return false; // otherwise links will be triggered
     };
