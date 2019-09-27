@@ -46,6 +46,20 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || lo
 <script src="initialize.js"></script>
 ```
 
+3. If may want to download using Gulp so that you may use locally
+
+```javascript
+gulp.task('web', function (done) {
+    var url = "https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/initialize.js";
+
+    download(url)
+        .pipe(gulp.dest("js/"));
+
+    done();
+});
+```
+
+
 # Usage #
 
 Initialize registers itself under the $$ name.
