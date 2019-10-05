@@ -22,7 +22,7 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || lo
 ```html
 <script src="jquery.js"></script>
 <script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.3.0/initialize.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.4.0/initialize.js"></script>
 ```
 
 2. Manual
