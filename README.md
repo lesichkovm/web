@@ -22,7 +22,7 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || lo
 ```html
 <script src="jquery.js"></script>
 <script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.4.0/initialize.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.5.0/initialize.js"></script>
 ```
 
 2. Manual
@@ -131,6 +131,16 @@ p.fail(function(error){ console.log(error) }); // Call failed
 
 p.always(function(){ }); // After call is completed
 ```
+
+If the API_URL ends with / or .json . The actions will be send like this:
+
+api.url.com/?command=action
+
+Otherwise they will be send using nice URLs
+
+api.url.com/action
+
+
 ### $$.log(message) ###
 Logs message to console, if debug is enabled
 
