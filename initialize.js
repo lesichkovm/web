@@ -416,6 +416,7 @@ function Initialize() {
 
     this.ws = function (command, data) {
         var data = (typeof data === "undefined") ? {} : data;
+        var cmd = trim(command,"/");
         var token = this.getToken();
         if (token !== null) {
             if (typeof data === 'string' || data instanceof String) {
@@ -424,11 +425,11 @@ function Initialize() {
                 data["Token"] = token;
             }
         }
-        var url = "";
+        var url = Config.getApiUrl();
         if (Config.getApiUrl().endsWith('/') || command.endsWith('.json')) {
-            url = Config.getApiUrl() + '?command=' + command + '&ts=' + Math.round(+new Date() / 1000);
+            url +=  '?command=' + command + '&ts=' + Math.round(+new Date() / 1000);
         } else {
-            url = Config.getApiUrl() + '/' + command + '/?ts=' + Math.round(+new Date() / 1000);
+            url += '/' + command + '/?ts=' + Math.round(+new Date() / 1000);
         }
         var dataType = command.endsWith('.json') ? 'json' : 'jsonp';
         var p = $.ajax({
