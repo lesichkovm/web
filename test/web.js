@@ -1,4 +1,5 @@
-// const add = require('../web.js');
+// const add = require('web.js');
+require('../web.js');
 
 function add(a, b) {
     return a + b;
