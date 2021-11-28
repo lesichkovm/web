@@ -1,3 +1,8 @@
-function add(a, b) {
-    return a + b;
+/**
+ * Initialize
+ * @type $$
+ */
+function Initialize() {
 }
+
+$$ = new Initialize();
