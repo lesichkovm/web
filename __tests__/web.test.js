@@ -1,24 +1,27 @@
 const oldWindowLocation = window.location
 
-beforeAll(() => {
-  delete window.location
+// beforeAll(() => {
+//     delete window.location
 
-  window.location = Object.defineProperties(
-    {},
-    {
-      ...Object.getOwnPropertyDescriptors(oldWindowLocation),
-      assign: {
-        configurable: true,
-        value: jest.fn(),
-      },
-    },
-  )
-})
-afterAll(() => {
-  // restore `window.location` to the original `jsdom`
-  // `Location` object
-  window.location = oldWindowLocation
-})
+//     window.location = Object.defineProperties(
+//         {},
+//         {
+//             ...Object.getOwnPropertyDescriptors(oldWindowLocation),
+//             href: {
+//                 configurable: true,
+//                 value: jest.fn(),
+//             },
+//         },
+//     )
+// })
+// beforeEach(() => {
+//     window.location.href.mockReset()
+// })
+// afterAll(() => {
+//     // restore `window.location` to the original `jsdom`
+//     // `Location` object
+//     window.location = oldWindowLocation
+// })
 
 test('$$ is initialized', () => {
     require('../web'); // This module has a side-effect
@@ -70,16 +73,73 @@ test('$$ has getLanguage and setLanguage methods', () => {
     expect($$.getLanguage()).toBe("EN_GB")
 });
 
-// test('$$ has getUrl methods', () => {
-//     // global.window = { location: { href: "http://example.com" } };
-//     // Object.assign(location, { host: "www.newhost.com", pathname: 'file.txt', href: "http://example.com"});
-//     window.location.assign('http://example.com')
-//     require('../web'); // This module has a side-effect
-//     expect(typeof $$.getUrl).toBe("function")
+test('$$ has getUrl methods', () => {
+    Object.defineProperty(window, "location", {
+        value: {
+            href: "http://example.com"
+        },
+        writable: true
+    });
 
-//     // window.location.href = "http://example.com";
-//     // console.log(window.location.href)
-//     // window.location.assign('http://example.com')
+    expect(typeof $$.getUrl).toBe("function")
 
-//     expect($$.getUrl()).toBe("http://example.com")
-// });
+    expect($$.getUrl()).toBe("http://example.com")
+});
+
+
+test('$$ has getUrlParam method', () => {
+    Object.defineProperty(window, "location", {
+        value: {
+            href: "http://example.com?invoice_id=324",
+            search: "?invoice_id=324&invoice_total=12.00"
+        },
+        writable: true
+    });
+
+    expect(typeof $$.getUrlParam).toBe("function")
+
+    expect($$.getUrlParam("invoice_id")).toBe("324")
+});
+
+test('$$ has getUrlParams method', () => {
+    Object.defineProperty(window, "location", {
+        value: {
+            href: "http://example.com?invoice_id=324",
+            search: "?invoice_id=324&invoice_total=12.00"
+        },
+        writable: true
+    });
+
+    expect(typeof $$.getUrlParams).toBe("function")
+
+    expect($$.getUrlParams()).toEqual({ "invoice_id": "324", "invoice_total": "12.00" })
+});
+
+test('$$ has to method', () => {
+    Object.defineProperty(window, "location", {
+        value: {
+            href: "http://example.com?invoice_id=324",
+            search: "?invoice_id=324&invoice_total=12.00"
+        },
+        writable: true
+    });
+
+    expect(typeof $$.to).toBe("function")
+
+    $$.to("http://yahoo.com")
+    expect(window.location.href).toEqual("http://yahoo.com")
+
+
+
+    document.body.innerHTML =
+    '<div>' +
+    '  <span id="username" />' +
+    '  <button id="button" />' +
+    '</div>';
+
+    $$.to("http://google.com", {}, {
+        target: "_blank"
+    });
+
+    expect(document.body.innerHTML).toContain("http://google.com")
+});
