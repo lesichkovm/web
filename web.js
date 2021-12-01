@@ -1,3 +1,24 @@
+function Config() {
+    this.getUniqueId = function () {
+        return typeof APP_ID == "undefined"
+            ? JSON.stringify(window.location.hostname)
+            : API_ID;
+    };
+    this.getRootUrl = function () {
+        return typeof WEBSITE_ID == "undefined"
+            ? window.location.protocol + "//" + window.location.hostname +
+            (window.location.port ? ":" + location.port : "")
+            : WEBSITE_URL;
+    };
+    this.getApiUrl = function () {
+        return typeof API_URL == "undefined"
+            ? window.location.protocol + "//" + window.location.hostname +
+            (location.port ? ":" + window.location.port : "") +
+            "/api"
+            : API_URL;
+    };
+}
+
 function Registry(namespace) {
     var namespace = typeof namespace === "undefined"
         ? jsonEncode(window.location.hostname)
@@ -307,8 +328,57 @@ function Initialize() {
 
         return false; // otherwise links will be triggered
     };
+
+    var topics = {}, subUid = -1;
+
+    this.publish = function (topic, args) {
+
+        if (!topics[topic]) {
+            return false;
+        }
+
+        setTimeout(function () {
+            var subscribers = topics[topic],
+                len = subscribers ? subscribers.length : 0;
+
+            while (len--) {
+                subscribers[len].func(topic, args);
+            }
+        }, 0);
+
+        return true;
+
+    };
+
+    this.subscribe = function (topic, func) {
+
+        if (!topics[topic]) {
+            topics[topic] = [];
+        }
+
+        var token = (++subUid).toString();
+        topics[topic].push({
+            token: token,
+            func: func
+        });
+        return token;
+    };
+
+    this.unsubscribe = function (token) {
+        for (var m in topics) {
+            if (topics[m]) {
+                for (var i = 0, j = topics[m].length; i < j; i++) {
+                    if (topics[m][i].token === token) {
+                        topics[m].splice(i, 1);
+                        return token;
+                    }
+                }
+            }
+        }
+        return false;
+    };
 }
 
-
-Registry = new Registry(/* Config.getUniqueId() */);
+Config = new Config();
+Registry = new Registry(Config.getUniqueId());
 $$ = new Initialize();

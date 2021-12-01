@@ -132,14 +132,31 @@ test('$$ has to method', () => {
 
 
     document.body.innerHTML =
-    '<div>' +
-    '  <span id="username" />' +
-    '  <button id="button" />' +
-    '</div>';
+        '<div>' +
+        '  <span id="username" />' +
+        '  <button id="button" />' +
+        '</div>';
 
     $$.to("http://google.com", {}, {
         target: "_blank"
     });
 
     expect(document.body.innerHTML).toContain("http://google.com")
+});
+
+test('$$ pubsub', () => {
+    expect(typeof $$.publish).toBe("function")
+    expect(typeof $$.subscribe).toBe("function")
+
+    let topName = null
+    function world(topic, args) {
+        topName = args
+    }
+    $$.subscribe("hello", world)
+    isPublished = $$.publish("hello", "Tomas")
+
+    expect(isPublished).toEqual(true)
+    setTimeout(function () {
+        expect(topName).toEqual("Tomas")
+    }, 4);
 });
