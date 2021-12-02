@@ -129,8 +129,6 @@ test('$$ has to method', () => {
     $$.to("http://yahoo.com")
     expect(window.location.href).toEqual("http://yahoo.com")
 
-
-
     document.body.innerHTML =
         '<div>' +
         '  <span id="username" />' +
@@ -142,6 +140,11 @@ test('$$ has to method', () => {
     });
 
     expect(document.body.innerHTML).toContain("http://google.com")
+
+
+    $$.to("/auth");
+
+    expect(window.location.href).toContain("/auth")
 });
 
 test('$$ pubsub', () => {
