@@ -4,7 +4,6 @@
   "description": "",
   "__main": "index.js",
   "scripts": {
-    "__test": "qunit",
     "test": "jest",
     "build": "uglifyjs --compress --mangle -- web.js > ./bin/web.js"
   },
