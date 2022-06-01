@@ -22,7 +22,7 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || lo
 ```html
 <script src="jquery.js"></script>
 <script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.5.0/initialize.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.6.1/web.js"></script>
 ```
 
 2. Manual
@@ -38,19 +38,19 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || lo
 }
 ```
 
-2) Download the **initialize.js** library and add to your webpage after JQuery
+2) Download the **web.js** library and add to your webpage after JQuery
 
 ```html
 <script src="jquery.js"></script>
 <script src="config.js"></script>
-<script src="initialize.js"></script>
+<script src="web.js"></script>
 ```
 
 3. If may want to download using Gulp so that you may use locally
 
 ```javascript
 gulp.task('web', function (done) {
-    var url = "https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/initialize.js";
+    var url = "https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/web.js";
 
     download(url)
         .pipe(gulp.dest("js/"));
