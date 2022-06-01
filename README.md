@@ -22,7 +22,7 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || lo
 ```html
 <script src="jquery.js"></script>
 <script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.6.1/web.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.6.1/bin/web.js"></script>
 ```
 
 2. Manual
@@ -50,7 +50,7 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || lo
 
 ```javascript
 gulp.task('web', function (done) {
-    var url = "https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/web.js";
+    var url = "https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/bin/web.js";
 
     download(url)
         .pipe(gulp.dest("js/"));
