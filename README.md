@@ -1,6 +1,6 @@
-# Initialize #
+# WebJS #
 
-Initialize is a framework for buiding web applications.
+WebJS is a framework for buiding standard multipage web applications.
 
 ## Installation ##
 
