@@ -108,9 +108,9 @@ function Registry(namespace) {
     const encValue = this.encrypt(value);
     localStorage.setItem(keyNamespaced, jsonEncode(encValue));
     const expiresTime = new Date().getTime() + expiresMilliseconds;
-    const expires = new Date();
-    expires.setTime(expiresTime);
-    localStorage.setItem(keyNamespaced + "&&expires", expires);
+    const expiresDate = new Date();
+    expiresDate.setTime(expiresTime);
+    localStorage.setItem(keyNamespaced + "&&expires", expiresDate);
   };
 
   this.remove = function (key) {
