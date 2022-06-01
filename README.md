@@ -1,5 +1,7 @@
 # WebJS #
 
+![tests](https://github.com/lesichkovm/web/workflows/tests/badge.svg)
+
 WebJS is a framework for buiding standard multipage web applications.
 
 ## Installation ##
