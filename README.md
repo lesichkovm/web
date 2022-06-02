@@ -64,7 +64,7 @@ gulp.task('web', function (done) {
 
 # Usage #
 
-Initialize registers itself under the $$ name.
+WebJS registers itself under the $$ namespace.
 
 ```js
 $(function(){
@@ -106,22 +106,22 @@ Returns the language or 'en' if not set
 ### $$.setLanguage(language) ###
 Sets the language
 
-### $$.getToken() ###
+### $$.getAuthToken() ###
 Returns the authentication token or NULL
 
-### $$.setToken(token) ###
+### $$.setAuthToken(token) ###
 Sets the authentication token. To remove set it to NULL
 
-### $$.getUser() ###
+### $$.getAuthUser() ###
 Returns the authenticated user or NULL
 
-### $$.setUser(user) ###
+### $$.setAuthUser(user) ###
 Sets the authenticated user. To remove set it to NULL
 
 ### $$.to(url) ###
 Redirects to current webpage to the specified URL (relative or absolute)
 
-### $$.ws(action, data) ###
+### (DEPRECATED) $$.ws(action, data) ###
 Calls the API with the specified action and data. Returns a promise
 
 ```javscript
