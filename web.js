@@ -2,7 +2,7 @@ function Config() {
   this.getUniqueId = function () {
     return typeof APP_ID == "undefined"
       ? JSON.stringify(window.location.hostname)
-      : API_ID;
+      : APP_ID;
   };
   this.getRootUrl = function () {
     return typeof WEBSITE_URL == "undefined"
