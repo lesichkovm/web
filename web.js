@@ -5,7 +5,7 @@ function Config() {
       : API_ID;
   };
   this.getRootUrl = function () {
-    return typeof WEBSITE_ID == "undefined"
+    return typeof WEBSITE_URL == "undefined"
       ? window.location.protocol +
           "//" +
           window.location.hostname +
