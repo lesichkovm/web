@@ -85,6 +85,7 @@ function Registry(namespace) {
     const valueDecoded = jsonDecode(value);
     return this.decrypt(valueDecoded);
   };
+  
   /**
    * Sets a value to a key
    * @param {string} key
@@ -200,6 +201,16 @@ function Initialize() {
   this.set = function (key, value) {
     return Registry.set(key, value);
   };
+  
+  /**
+   * Returns the API URL
+   * If an API_URL variable is set, will return as it is. Otherwise will
+   * generate one, assuming the API is hosted on the same domain {domain}/api
+   * @returns {String}
+   */
+  this.getApiUrl = function () {
+    return Config.getApiUrl();
+  };
 
   /**
    * Returns the current page URL
@@ -283,22 +294,27 @@ function Initialize() {
   this.setAuthToken = function (token) {
     return Registry.set("AuthToken", token);
   };
-
+  
   /**
-   * Returns the current language.
+   * Returns the current language, if set.
    * Key "CurrentLanguage"
    * @returns {Array}
    */
-  this.setLanguage = function (language) {
-    return Registry.set("CurrentLanguage", language);
-  };
-
   this.getLanguage = function () {
     var language = Registry.get("CurrentLanguage");
     if (language === null) {
       language = "en";
     }
     return language;
+  };
+
+  /**
+   * Sets the current language.
+   * Key "CurrentLanguage"
+   * @returns {Array}
+   */
+  this.setLanguage = function (language) {
+    return Registry.set("CurrentLanguage", language);
   };
 
   /**
