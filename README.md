@@ -44,7 +44,7 @@ Step 2) Download the **web.js** library locally and add to your webpage
 <script src="web.js"></script>
 ```
 
-Alternatively you may want to download automatically using Gulp
+Hint: Alternatively you may want to download automatically using Gulp
 
 ```javascript
 gulp.task('web', function (done) {
@@ -56,6 +56,8 @@ gulp.task('web', function (done) {
     done();
 });
 ```
+
+Hint: Advanced optional. You may want to group config.js with web.js to reduce the number of the HTTP calls.
 
 
 # Usage #
