@@ -8,28 +8,27 @@ WebJS is a framework for buiding standard multipage web applications.
 
 1. Using CDN
 
-1) Create a file **config.js**
+Step 1) Create a file **config.js**
 
 ```js
-var APP_ID = "";      // Your APP unique ID
+var APP_ID = "";      // Your APP unique ID (optional)
 var WEBSITE_URL = ""; // Your website root URL
-var API_URL = "";     // Your website API URL
+var API_URL = "";     // Your website API URL (optional)
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "") {
     WEBSITE_URL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
 }
 ```
 
-2) Add to your webpage after the JQuery library
+Step 2) Add to your webpage
 
 ```html
-<script src="jquery.js"></script>
 <script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.6.1/bin/web.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.6.6/bin/web.js"></script>
 ```
 
 2. Manual
 
-1) Create a file **config.js**
+Step 1) Create a file **config.js**
 
 ```js
 var APP_ID = "";      // Your APP unique ID
@@ -40,15 +39,14 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || lo
 }
 ```
 
-2) Download the **web.js** library and add to your webpage after JQuery
+Step 2) Download the **web.js** library and add to your webpage
 
 ```html
-<script src="jquery.js"></script>
 <script src="config.js"></script>
 <script src="web.js"></script>
 ```
 
-3. If may want to download using Gulp so that you may use locally
+3. You may want to download using Gulp so that you may use locally
 
 ```javascript
 gulp.task('web', function (done) {
