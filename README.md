@@ -4,9 +4,7 @@
 
 WebJS is a framework for buiding standard multipage web applications.
 
-## Installation ##
-
-1. Using CDN
+## Installation Using CDN ##
 
 Step 1) Create a file **config.js**
 
@@ -26,7 +24,7 @@ Step 2) Add to your webpage
 <script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.6.6/bin/web.js"></script>
 ```
 
-2. Manual
+## Manual Installation ##
 
 Step 1) Create a file **config.js**
 
@@ -39,14 +37,14 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || lo
 }
 ```
 
-Step 2) Download the **web.js** library and add to your webpage
+Step 2) Download the **web.js** library locally and add to your webpage
 
 ```html
 <script src="config.js"></script>
 <script src="web.js"></script>
 ```
 
-3. You may want to download using Gulp so that you may use locally
+Alternatively you may want to download automatically using Gulp
 
 ```javascript
 gulp.task('web', function (done) {
