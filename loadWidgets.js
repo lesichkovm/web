@@ -7,7 +7,14 @@ function loadWidgets() {
       fetch(url).then(function(response) {
           return response.text();
       }).then((html)=>{
+          // Load HTML
           widget.innerHTML = html;
+        
+          // Execute scripts
+          const codes = widget.getElementsByTagName("script");
+          for (var i=0; i < codes.length; i++)  {  
+              eval(codes[i].text);  
+          }
       });
   });
   
