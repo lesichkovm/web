@@ -21,7 +21,7 @@ Step 2) Add to your webpage
 
 ```html
 <script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.6.6/bin/web.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.7.0/bin/web.js"></script>
 ```
 
 ## Manual Installation ##
