@@ -294,12 +294,32 @@ if (typeof require !== 'undefined') {
   } catch (e) {
     console.error('Failed to load @lesichkovm/registryjs:', e);
   }
+} else if (typeof window !== 'undefined' && window.Registry) {
+  // Browser environment when loaded via script tag
+  Registry = window.Registry;
+} else if (typeof globalThis !== 'undefined' && globalThis.Registry) {
+  // Support for modern environments
+  Registry = globalThis.Registry;
 } else {
-  // Browser environment - assume the script is loaded via a script tag
-  // Make sure to include the Registry script before this one
+  throw new Error('RegistryJS is required. Please include it before WebJS.');
 }
 
+// Initialize components
 Config = new Config();
-// Initialize Registry with the unique ID
 Registry = new Registry(Config.getUniqueId());
 $$ = new Initialize();
+
+// Export for CommonJS/Node.js
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = $$;
+}
+
+// Export for ES modules
+if (typeof exports !== 'undefined') {
+  exports.default = $$;
+}
+
+// Export for browser global
+if (typeof window !== 'undefined') {
+  window.WebJS = $$;
+}

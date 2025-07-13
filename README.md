@@ -17,26 +17,35 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || lo
 }
 ```
 
-Step 2) Add to your webpage
 
 ```html
 <!-- Required: Configuration -->
 <script src="config.js"></script>
 
-<!-- Required: RegistryJS dependency -->
-<script src="https://cdn.jsdelivr.net/gh/lesichkovm/registryjs@latest/dist/registry.js"></script>
-
-<!-- Required: WebJS library -->
-<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/dist/web.js"></script>
+<!-- WebJS (includes RegistryJS) -->
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/dist/web.min.js"></script>
 ```
 
-### Important Notes:
-1. **RegistryJS is a required dependency** - WebJS depends on RegistryJS for its storage functionality.
-2. **Load order matters** - Make sure to load RegistryJS before WebJS.
-3. **Alternative installation**: You can also install via npm:
-   ```bash
-   npm install @lesichkovm/web @lesichkovm/registryjs
-   ```
+### Alternative Installation Methods
+
+#### Via CDN (ES Modules)
+```html
+<script type="module">
+  import 'https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/dist/web.min.js';
+  // Use WebJS via window.WebJS
+</script>
+```
+
+#### Via npm
+```bash
+npm install @lesichkovm/web
+```
+
+Then in your JavaScript:
+```javascript
+import '@lesichkovm/web';
+// Use WebJS via window.WebJS
+```
 
 ## Manual Installation ##
 
