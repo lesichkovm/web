@@ -32,12 +32,14 @@ const buildOptions = {
   // Make sure the bundle works in the browser
   platform: 'browser',
   target: ['es2015'],
-  // Externalize any Node.js built-ins that might be used
+  // Externalize Node.js built-ins that aren't needed in the browser
   external: ['fs', 'path', 'os'],
-  // Make sure the bundle includes the dependencies
-  packages: 'external',
+  // Bundle all dependencies
+  bundle: true,
+  // Don't mark any packages as external
+  external: [],
   define: {
-    'process.env.NODE_ENV': '"production"',
+    'process.env.NODE_ENV': '"production"'
   }
 };
 

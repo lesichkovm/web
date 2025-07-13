@@ -23,6 +23,7 @@ function ConfigUtils() {
 // Import the Registry from external package
 // https://github.com/lesichkovm/registryjs
 // https://www.npmjs.com/package/@lesichkovm/registryjs
+const Registry = require('@lesichkovm/registryjs');
 
 
 /**
@@ -159,7 +160,6 @@ function Initialize() {
   this.unsubscribe = pubsub.unsubscribe.bind(pubsub);
 
   // Initialize registry
-  const Registry = require('@lesichkovm/registryjs');
   this.registry = new Registry(getUniqueId());
 }
 
