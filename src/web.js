@@ -1,12 +1,15 @@
-// Import utility functions
+// Import utility functions and modules
 const { rtrim, ltrim } = require('./core/utils');
+const createPubSub = require('./core/pubsub');
 
+// Config class
 function Config() {
   this.getUniqueId = function () {
     return typeof APP_ID == "undefined"
       ? JSON.stringify(window.location.hostname)
       : APP_ID;
   };
+  
   this.getRootUrl = function () {
     return typeof WEBSITE_URL == "undefined"
       ? window.location.protocol +
@@ -15,6 +18,7 @@ function Config() {
           (window.location.port ? ":" + location.port : "")
       : WEBSITE_URL;
   };
+  
   this.getApiUrl = function () {
     return typeof API_URL == "undefined"
       ? window.location.protocol +
@@ -224,52 +228,13 @@ function Initialize() {
     return false; // otherwise links will be triggered
   };
 
-  var topics = {},
-    subUid = -1;
-
-  this.publish = function (topic, args) {
-    if (!topics[topic]) {
-      return false;
-    }
-
-    setTimeout(function () {
-      var subscribers = topics[topic],
-        len = subscribers ? subscribers.length : 0;
-
-      while (len--) {
-        subscribers[len].func(topic, args);
-      }
-    }, 0);
-
-    return true;
-  };
-
-  this.subscribe = function (topic, func) {
-    if (!topics[topic]) {
-      topics[topic] = [];
-    }
-
-    var token = (++subUid).toString();
-    topics[topic].push({
-      token: token,
-      func: func,
-    });
-    return token;
-  };
-
-  this.unsubscribe = function (token) {
-    for (var m in topics) {
-      if (topics[m]) {
-        for (var i = 0, j = topics[m].length; i < j; i++) {
-          if (topics[m][i].token === token) {
-            topics[m].splice(i, 1);
-            return token;
-          }
-        }
-      }
-    }
-    return false;
-  };
+  // Initialize pub/sub
+  const pubsub = createPubSub();
+  
+  // Expose pub/sub methods
+  this.publish = pubsub.publish.bind(pubsub);
+  this.subscribe = pubsub.subscribe.bind(pubsub);
+  this.unsubscribe = pubsub.unsubscribe.bind(pubsub);
 
   // Utility functions are now imported from core/utils.js
 }
