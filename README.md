@@ -2,49 +2,30 @@
 
 ![tests](https://github.com/lesichkovm/web/workflows/tests/badge.svg)
 
-WebJS is a framework for building standard multipage web applications. It includes RegistryJS for persistent storage and comes pre-minified for production use.
+WebJS is a lightweight framework for building standard multipage web applications.
+All utilities are accessible through a simple `$$` global object.
+It brings back the joy of web development.
 
-## Quick Start
+## Features
 
-### 1. Create a Configuration File
+WebJS provides a set of utility functions for common web development tasks:
 
-Create a `config.js` file with your application settings:
+- **URL Utilities**: Parse and manipulate URLs and query parameters
+- **Auth Helpers**: Simple functions for managing authentication state
+- **Event System**: Lightweight pub/sub for component communication
+- **Persistent Key-Value Store**: Simple storage that persists across page reloads
+- **Tiny Footprint**: No external dependencies, just pure JavaScript
 
-```js
-// config.js
-var APP_ID = "";      // Your APP unique ID (optional)
-var WEBSITE_URL = ""; // Your website root URL
-var API_URL = "";     // Your website API URL (optional)
+## Installation
 
-// Auto-configure for local development
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "") {
-    WEBSITE_URL = window.location.protocol + '//' + window.location.hostname + 
-                 (window.location.port ? ':' + window.location.port : '');
-}
-```
-
-### 2. Include WebJS in Your Project
-
-#### Option 1: CDN (Recommended for Production)
+### Using CDN (Recommended)
 
 ```html
-<!-- Load configuration first -->
-<script src="config.js"></script>
-
-<!-- Load WebJS (minified production build) -->
+<!-- Load WebJS from CDN -->
 <script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/dist/web.min.js"></script>
 ```
 
-#### Option 2: ES Modules
-
-```html
-<script type="module">
-  import 'https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/dist/web.min.js';
-  // Access WebJS via window.WebJS
-</script>
-```
-
-#### Option 3: npm Package
+### npm Package
 
 ```bash
 npm install @lesichkovm/web
@@ -54,161 +35,266 @@ Then in your application:
 
 ```javascript
 import '@lesichkovm/web';
-// Access WebJS via window.WebJS
+// Access WebJS via window.$$ or window.WebJS
 ```
 
-## Production Notes
 
-- Always use `web.min.js` in production for better performance.
-- The minified version includes all dependencies (like RegistryJS) in a single file.
-- Source maps are available for debugging in development.
+## Basic Usage
 
-## Manual Installation ##
+### Accessing WebJS
 
-Step 1) Create a file **config.js**
+WebJS is available globally as `$$` or `window.WebJS`:
+
+```javascript
+// Using the global $$
+const name = $$.getUrlParam('name');
+
+// Or using window.WebJS
+const token = window.WebJS.getAuthToken();
+```
+
+## Core Methods
+
+### Registry (Key-Value Storage)
+
+```javascript
+// Set a value
+$$.set('user.preferences.theme', 'dark');
+
+// Get a value
+const theme = $$.get('user.preferences.theme'); // Returns 'dark'
+```
+
+### URL Handling
+
+```javascript
+// Get current URL
+const currentUrl = $$.getUrl();
+
+// Get URL parameter
+const id = $$.getUrlParam('id');
+
+// Get all URL parameters
+const params = $$.getUrlParams();
+
+// Navigate to a new URL
+$$.to('/dashboard');
+```
+
+### Authentication Helpers
+
+WebJS provides a set of authentication helpers to manage user authentication state.
+
+```javascript
+// Set authentication token (e.g., JWT)
+$$.setAuthToken('your-auth-token');
+
+// Get current token
+const token = $$.getAuthToken();
+
+// Set authenticated user
+$$.setAuthUser({ id: 1, name: 'John Doe' });
+
+// Get current user
+const user = $$.getAuthUser();
+```
+
+### Event System (Pub/Sub)
+
+WebJS includes a powerful event system that follows the publish/subscribe pattern,
+allowing different parts of your application to communicate without direct dependencies.
+
+#### Basic Usage
+
+```javascript
+// Subscribe to an event
+const subscription = $$.subscribe('user.updated', (data) => {
+  console.log('User updated:', data);
+});
+
+// Publish an event
+$$.publish('user.updated', { id: 1, name: 'Jane Doe' });
+
+// Unsubscribe when done
+subscription.unsubscribe();
+```
+
+#### Common Patterns
+
+```javascript
+// System events
+$$.subscribe('app.initialized', (config) => {
+  console.log('App initialized with config:', config);
+});
+
+// User interaction events
+$$.subscribe('cart.updated', (cart) => {
+  updateCartUI(cart);
+  $$.publish('analytics.track', { event: 'cart_updated', items: cart.items });
+});
+
+// Clean up all subscriptions when component unmounts
+const subscriptions = [
+  $$.subscribe('event1', handler1),
+  $$.subscribe('event2', handler2)
+];
+
+// Later...
+subscriptions.forEach(sub => sub.unsubscribe());
+```
+
+### Language
+
+```javascript
+// Set language
+$$.setLanguage('en');
+
+// Get current language
+const lang = $$.getLanguage();
+```
+
+## API Reference
+
+### Registry Methods
+
+#### `$$.get(key)`
+Returns a value from the registry by key. Returns `null` if the key is not set.
+
+```javascript
+const theme = $$.get('user.preferences.theme');
+```
+
+#### `$$.set(key, value)`
+Stores a value in the registry. Returns the set value.
+
+```javascript
+$$.set('user.preferences.theme', 'dark');
+```
+
+### URL Methods
+
+#### `$$.getUrl()`
+Returns the current URL as a string.
+
+#### `$$.getUrlParam(param)`
+Returns the value of a URL query parameter. Returns `null` if the parameter is not present.
+
+```javascript
+const id = $$.getUrlParam('id');
+```
+
+#### `$$.getUrlParams()`
+Returns an object containing all URL query parameters.
+
+```javascript
+const params = $$.getUrlParams();
+// Example: for URL ?id=123&filter=active
+// Returns: { id: '123', filter: 'active' }
+```
+
+#### `$$.getHashParameter()`
+Returns the current URL hash (without the # symbol) or `null` if no hash is present.
+
+#### `$$.to(url)`
+Navigates to the specified URL. Can be relative or absolute.
+
+```javascript
+// Relative URL
+$$.to('/dashboard');
+
+// Absolute URL
+$$.to('https://example.com');
+```
+
+### Authentication Methods
+
+#### `$$.getAuthToken()`
+Returns the current authentication token or `null` if not set.
+
+#### `$$.setAuthToken(token)`
+Sets the authentication token. Pass `null` to clear the token.
+
+```javascript
+// Set token
+$$.setAuthToken('your-jwt-token');
+
+// Clear token
+$$.setAuthToken(null);
+```
+
+#### `$$.getAuthUser()`
+Returns the currently authenticated user object or `null` if not authenticated.
+
+#### `$$.setAuthUser(user)`
+Sets the authenticated user. Pass `null` to clear the user.
+
+```javascript
+// Set user
+$$.setAuthUser({ id: 1, name: 'John Doe' });
+
+// Clear user
+$$.setAuthUser(null);
+```
+
+### Language Methods
+
+#### `$$.getLanguage()`
+Returns the current language code (defaults to 'en' if not set).
+
+#### `$$.setLanguage(language)`
+Sets the current language.
+
+```javascript
+$$.setLanguage('es');
+```
+
+## Advanced Configuration
+
+WebJS is designed to work out of the box with zero configuration. The following section is only needed for advanced use cases.
+
+### Loading Configuration
+
+If you need to customize WebJS behavior, create a `config.js` file and load it **before** WebJS:
+
+```html
+<!-- Load configuration first (optional) -->
+<script src="config.js"></script>
+<!-- Then load WebJS -->
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/dist/web.min.js"></script>
+```
+
+### When to Use Configuration
+
+You might want to create a `config.js` file if you need to:
+- Set a custom API URL (different from `/api` on the current host)
+- Override the default host detection
+- Set an application ID for tracking or analytics
+
+### Example Configuration
+
+Create a `config.js` file in your project root if you need to customize the behavior:
 
 ```js
-var APP_ID = "";      // Your APP unique ID
-var WEBSITE_URL = ""; // Your website root URL
-var API_URL = "";     // Your website API URL
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "") {
-    WEBSITE_URL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
+// config.js
+var APP_ID = "my-app";          // Optional: Your application ID
+var WEBSITE_URL = "https://example.com";  // Optional: Override default host
+var API_URL = "https://api.example.com";  // Optional: Set custom API endpoint
+```
+
+### Development Auto-Configuration
+
+During development (when running on localhost), WebJS will automatically detect and configure itself:
+
+```js
+// This is handled automatically - no need to include this in your config
+if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    // Auto-detect local development server
+    WEBSITE_URL = window.location.protocol + '//' + window.location.hostname + 
+                 (window.location.port ? ':' + window.location.port : '');
+    API_URL = WEBSITE_URL + '/api';
 }
 ```
 
-Step 2) Download the **registry.js** and **web.js** libraries locally and add to your webpage
+## License
 
-```html
-<script src="config.js"></script>
-<script src="registry.js"></script>
-<script src="web.js"></script>
-```
-
-Hint: Alternatively you may want to download automatically using Gulp
-
-```javascript
-gulp.task('dependencies', function (done) {
-    // Download Registry.js
-    download("https://cdn.jsdelivr.net/gh/lesichkovm/registryjs@latest/dist/registry.js")
-        .pipe(gulp.dest("js/"));
-        
-    // Download Web.js
-    download("https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/dist/web.js")
-        .pipe(gulp.dest("js/"));
-
-    done();
-});
-```
-
-Hint: Advanced optional. You may want to group config.js with web.js to reduce the number of the HTTP calls.
-
-
-# Usage #
-
-WebJS registers itself under the $$ namespace.
-
-```js
-$(function(){
-  var name = $$.getUrlParam('name');
-  alert('Your name is ' + name);
-});
-```
-
-## Methods ##
-
-### $$.get(key) ###
-
-Returns a key from registry or NULL if not set
-
-### $$.set(key, value) ###
-
-Sets a key-value pair to registry or NULL if not set
-
-### $$.getHashParameter() ###
-Returns a hash parameter or NULL if not set
-
-### $$.getUrl() ###
-Returns the current URL
-
-### $$.getUrlParam() ###
-Returns a single query parameter or NULL if not set
-
-```javscript
-var name = $$.getUrlParam("name");
-alert("Hi" + (name==null ? "Stranger" : name));
-```
-
-### $$.getUrlParams() ###
-Returns the query parameters from the current URL
-
-### $$.getLanguage() ###
-Returns the language or 'en' if not set
-
-### $$.setLanguage(language) ###
-Sets the language
-
-### $$.getAuthToken() ###
-Returns the authentication token or NULL
-
-### $$.setAuthToken(token) ###
-Sets the authentication token. To remove set it to NULL
-
-### $$.getAuthUser() ###
-Returns the authenticated user or NULL
-
-### $$.setAuthUser(user) ###
-Sets the authenticated user. To remove set it to NULL
-
-### $$.to(url) ###
-Redirects to current webpage to the specified URL (relative or absolute)
-
-### (DEPRECATED) $$.ws(action, data) ###
-Calls the API with the specified action and data. Returns a promise
-
-```javscript
-var p = $$.ws('login',{username:"",password:""});
-
-p.done(function(response){ }); // Call successful
-
-p.fail(function(error){ console.log(error) }); // Call failed
-
-p.always(function(){ }); // After call is completed
-```
-
-If the API_URL ends with / or .json . The actions will be send like this:
-
-api.url.com/?command=action
-
-Otherwise they will be send using nice URLs
-
-api.url.com/action
-
-
-### $$.log(message) ###
-Logs message to console, if debug is enabled
-
-## Publish Subscibe Methods ##
-
-### $.publish("event-name", data) ###
-
-### $.subscribe("event-name") ###
-
-### $.unsubscribe("event-name") ###
-
-# Registry #
-
-The registry provides persistence across requests using Local Storage.
-
-## Methods ##
-
-### Registry.get(key) ###
-Gets a key from the registry
-
-### Registry.set(key, value, expires) ###
-Sets a key in the registry. Optional expiration time in seconds
-
-### Registry.remove(key) ###
-Removes a key from the registry
-
-### Registry.empty() ###
-Empties the registry
+MIT
