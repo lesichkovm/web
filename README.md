@@ -20,12 +20,23 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || lo
 Step 2) Add to your webpage
 
 ```html
+<!-- Required: Configuration -->
 <script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lesichkovm/registryjs@latest/bin/registry.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/bin/web.js"></script>
+
+<!-- Required: RegistryJS dependency -->
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/registryjs@latest/dist/registry.js"></script>
+
+<!-- Required: WebJS library -->
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/dist/web.js"></script>
 ```
 
-Note: This package now depends on the [@lesichkovm/registryjs](https://github.com/lesichkovm/registryjs) package.
+### Important Notes:
+1. **RegistryJS is a required dependency** - WebJS depends on RegistryJS for its storage functionality.
+2. **Load order matters** - Make sure to load RegistryJS before WebJS.
+3. **Alternative installation**: You can also install via npm:
+   ```bash
+   npm install @lesichkovm/web @lesichkovm/registryjs
+   ```
 
 ## Manual Installation ##
 
@@ -53,11 +64,11 @@ Hint: Alternatively you may want to download automatically using Gulp
 ```javascript
 gulp.task('dependencies', function (done) {
     // Download Registry.js
-    download("https://cdn.jsdelivr.net/gh/lesichkovm/registryjs@latest/bin/registry.js")
+    download("https://cdn.jsdelivr.net/gh/lesichkovm/registryjs@latest/dist/registry.js")
         .pipe(gulp.dest("js/"));
         
     // Download Web.js
-    download("https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/bin/web.js")
+    download("https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/dist/web.js")
         .pipe(gulp.dest("js/"));
 
     done();
