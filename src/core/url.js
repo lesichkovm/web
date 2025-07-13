@@ -3,6 +3,33 @@
  */
 
 /**
+ * Returns the root URL of the website
+ * @returns {string}
+ */
+function getRootUrl() {
+  return typeof WEBSITE_URL === "undefined"
+    ? window.location.protocol +
+        "//" +
+        window.location.hostname +
+        (window.location.port ? ":" + window.location.port : "")
+    : WEBSITE_URL;
+}
+
+/**
+ * Returns the API URL
+ * @returns {string}
+ */
+function getApiUrl() {
+  return typeof API_URL === "undefined"
+    ? window.location.protocol +
+        "//" +
+        window.location.hostname +
+        (window.location.port ? ":" + window.location.port : "") +
+        "/api"
+    : API_URL;
+}
+
+/**
  * Returns the current page URL
  * @returns {string}
  */
@@ -45,6 +72,8 @@ function getUrlParam(parameter) {
 // Export for CommonJS/Node.js
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
+    getRootUrl,
+    getApiUrl,
     getUrl,
     getUrlParams,
     getUrlParam
@@ -55,6 +84,8 @@ if (typeof module !== 'undefined' && module.exports) {
 if (typeof window !== 'undefined') {
   window.WebJS = window.WebJS || {};
   window.WebJS.URL = {
+    getRootUrl,
+    getApiUrl,
     getUrl,
     getUrlParams,
     getUrlParam

@@ -1,7 +1,7 @@
 // Import utility functions and modules
-const { rtrim, ltrim } = require('./core/utils');
+const { rtrim, ltrim, getUniqueId } = require('./core/utils');
 const createPubSub = require('./core/pubsub');
-const { getUrl, getUrlParams, getUrlParam } = require('./core/url');
+const { getUrl, getUrlParams, getUrlParam, getRootUrl, getApiUrl } = require('./core/url');
 const {
   getAuthUser,
   setAuthUser,
@@ -12,32 +12,12 @@ const {
 } = require('./core/auth');
 const createNavigation = require('./core/navigation');
 
-// Config class
-function Config() {
-  this.getUniqueId = function () {
-    return typeof APP_ID == "undefined"
-      ? JSON.stringify(window.location.hostname)
-      : APP_ID;
-  };
-  
-  this.getRootUrl = function () {
-    return typeof WEBSITE_URL == "undefined"
-      ? window.location.protocol +
-          "//" +
-          window.location.hostname +
-          (window.location.port ? ":" + location.port : "")
-      : WEBSITE_URL;
-  };
-  
-  this.getApiUrl = function () {
-    return typeof API_URL == "undefined"
-      ? window.location.protocol +
-          "//" +
-          window.location.hostname +
-          (location.port ? ":" + window.location.port : "") +
-          "/api"
-      : API_URL;
-  };
+// Configuration utilities - kept for backward compatibility
+// but now delegates to the appropriate modules
+function ConfigUtils() {
+  this.getUniqueId = getUniqueId;
+  this.getRootUrl = getRootUrl;
+  this.getApiUrl = getApiUrl;
 }
 
 // Import the Registry from external package
@@ -50,7 +30,6 @@ function Config() {
  * @type $$
  */
 function Initialize() {
-  /* START: Public Scope */
   this.debug = true;
 
   /**
@@ -61,7 +40,7 @@ function Initialize() {
    * @returns {Object}
    */
   this.get = function (key) {
-    return Registry.get(key);
+    return this.registry.get(key);
   };
 
   /**
@@ -71,7 +50,7 @@ function Initialize() {
    * @returns {Object}
    */
   this.set = function (key, value) {
-    return Registry.set(key, value);
+    return this.registry.set(key, value);
   };
   
   /**
@@ -80,9 +59,7 @@ function Initialize() {
    * generate one, assuming the API is hosted on the same domain {domain}/api
    * @returns {String}
    */
-  this.getApiUrl = function () {
-    return Config.getApiUrl();
-  };
+  this.getApiUrl = getApiUrl;
 
   /**
    * Returns the current page URL
@@ -108,7 +85,7 @@ function Initialize() {
    * @returns {Object|null} - The authenticated user or null if not authenticated
    */
   this.getAuthUser = function() {
-    return getAuthUser(Registry);
+    return getAuthUser(this.registry);
   };
 
   /**
@@ -117,7 +94,7 @@ function Initialize() {
    * @returns {Object} - The set user
    */
   this.setAuthUser = function(user) {
-    return setAuthUser(user, Registry);
+    return setAuthUser(user, this.registry);
   };
 
   /**
@@ -125,7 +102,7 @@ function Initialize() {
    * @returns {string} - The authentication token
    */
   this.getAuthToken = function() {
-    return getAuthToken(Registry);
+    return getAuthToken(this.registry);
   };
 
   /**
@@ -134,7 +111,7 @@ function Initialize() {
    * @returns {string} - The set token
    */
   this.setAuthToken = function(token) {
-    return setAuthToken(token, Registry);
+    return setAuthToken(token, this.registry);
   };
   
   /**
@@ -142,7 +119,7 @@ function Initialize() {
    * @returns {string} - The current language code (default: 'en')
    */
   this.getLanguage = function() {
-    return getLanguage(Registry);
+    return getLanguage(this.registry);
   };
 
   /**
@@ -151,11 +128,11 @@ function Initialize() {
    * @returns {string} - The set language code
    */
   this.setLanguage = function(language) {
-    return setLanguage(language, Registry);
+    return setLanguage(language, this.registry);
   };
 
-  // Initialize navigation
-  const navigation = createNavigation(Config);
+  // Initialize navigation with the root URL
+  const navigation = createNavigation({ getRootUrl });
   
   /**
    * Redirects the user to the specified URL
@@ -181,31 +158,12 @@ function Initialize() {
   this.subscribe = pubsub.subscribe.bind(pubsub);
   this.unsubscribe = pubsub.unsubscribe.bind(pubsub);
 
-  // Utility functions are now imported from core/utils.js
-}
-
-// Import Registry from the external package
-if (typeof require !== 'undefined') {
-  // Node.js environment
-  try {
-    const RegistryJS = require('@lesichkovm/registryjs');
-    Registry = RegistryJS;
-  } catch (e) {
-    console.error('Failed to load @lesichkovm/registryjs:', e);
-  }
-} else if (typeof window !== 'undefined' && window.Registry) {
-  // Browser environment when loaded via script tag
-  Registry = window.Registry;
-} else if (typeof globalThis !== 'undefined' && globalThis.Registry) {
-  // Support for modern environments
-  Registry = globalThis.Registry;
-} else {
-  throw new Error('RegistryJS is required. Please include it before WebJS.');
+  // Initialize registry
+  const Registry = require('@lesichkovm/registryjs');
+  this.registry = new Registry(getUniqueId());
 }
 
 // Initialize components
-Config = new Config();
-Registry = new Registry(Config.getUniqueId());
 $$ = new Initialize();
 
 // Export for CommonJS/Node.js

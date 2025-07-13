@@ -14,13 +14,23 @@ function ltrim(str, charlist) {
   return (str + "").replace(re, "");
 }
 
+/**
+ * Returns a unique identifier for the application
+ * @returns {string}
+ */
+function getUniqueId() {
+  return typeof APP_ID === "undefined"
+    ? JSON.stringify(window.location.hostname)
+    : APP_ID;
+}
+
 // Export for CommonJS/Node.js
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { rtrim, ltrim };
+  module.exports = { rtrim, ltrim, getUniqueId };
 }
 
 // Export for browser global
 if (typeof window !== 'undefined') {
   window.WebJS = window.WebJS || {};
-  window.WebJS.utils = { rtrim, ltrim };
+  window.WebJS.utils = { rtrim, ltrim, getUniqueId };
 }
