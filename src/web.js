@@ -2,6 +2,14 @@
 const { rtrim, ltrim } = require('./core/utils');
 const createPubSub = require('./core/pubsub');
 const { getUrl, getUrlParams, getUrlParam } = require('./core/url');
+const {
+  getAuthUser,
+  setAuthUser,
+  getAuthToken,
+  setAuthToken,
+  getLanguage,
+  setLanguage
+} = require('./core/auth');
 
 // Config class
 function Config() {
@@ -96,66 +104,53 @@ function Initialize() {
 
   /**
    * Returns the authenticated user
-   * Key "AuthUser"
-   * @returns {Array}
+   * @returns {Object|null} - The authenticated user or null if not authenticated
    */
-  this.getAuthUser = function () {
-    if (Registry.get("AuthUser") === null) {
-      return null;
-    }
-    return Registry.get("AuthUser");
+  this.getAuthUser = function() {
+    return getAuthUser(Registry);
   };
 
   /**
-   * Sets the authenticated user.
-   * Key "AuthUser"
-   *
-   * @returns {Array}
+   * Sets the authenticated user
+   * @param {Object} user - The user object to set
+   * @returns {Object} - The set user
    */
-  this.setAuthUser = function (user) {
-    return Registry.set("AuthUser", user);
+  this.setAuthUser = function(user) {
+    return setAuthUser(user, Registry);
   };
 
   /**
    * Returns the authentication token
-   * Key "AuthToken"
-   *
-   * @returns {String}
+   * @returns {string} - The authentication token
    */
-  this.getAuthToken = function () {
-    return Registry.get("AuthToken");
+  this.getAuthToken = function() {
+    return getAuthToken(Registry);
   };
 
   /**
-   * Sets the authentication token.
-   * Key "AuthToken"
-   *
-   * @returns {Array}
+   * Sets the authentication token
+   * @param {string} token - The token to set
+   * @returns {string} - The set token
    */
-  this.setAuthToken = function (token) {
-    return Registry.set("AuthToken", token);
+  this.setAuthToken = function(token) {
+    return setAuthToken(token, Registry);
   };
   
   /**
-   * Returns the current language, if set.
-   * Key "CurrentLanguage"
-   * @returns {Array}
+   * Returns the current language
+   * @returns {string} - The current language code (default: 'en')
    */
-  this.getLanguage = function () {
-    var language = Registry.get("CurrentLanguage");
-    if (language === null) {
-      language = "en";
-    }
-    return language;
+  this.getLanguage = function() {
+    return getLanguage(Registry);
   };
 
   /**
-   * Sets the current language.
-   * Key "CurrentLanguage"
-   * @returns {Array}
+   * Sets the current language
+   * @param {string} language - The language code to set
+   * @returns {string} - The set language code
    */
-  this.setLanguage = function (language) {
-    return Registry.set("CurrentLanguage", language);
+  this.setLanguage = function(language) {
+    return setLanguage(language, Registry);
   };
 
   /**
