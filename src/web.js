@@ -1,6 +1,7 @@
 // Import utility functions and modules
 const { rtrim, ltrim } = require('./core/utils');
 const createPubSub = require('./core/pubsub');
+const { getUrl, getUrlParams, getUrlParam } = require('./core/url');
 
 // Config class
 function Config() {
@@ -76,44 +77,22 @@ function Initialize() {
 
   /**
    * Returns the current page URL
-   *
-   * @returns {String}
+   * @returns {string}
    */
-  this.getUrl = function () {
-    return window.location.href;
-  };
+  this.getUrl = getUrl;
 
   /**
-   * Returns the URL parameters
-   *
-   * @returns {Array}
+   * Returns the URL parameters as an object
+   * @returns {Object}
    */
-  this.getUrlParams = function () {
-    var s = window.location.search.substring(1).split("&");
-    var p = {};
-    if (!s.length) {
-      return p;
-    }
-
-    for (var i = 0; i < s.length; i++) {
-      var parts = s[i].split("=");
-      p[unescape(parts[0])] = unescape(parts[1]);
-    }
-
-    return p;
-  };
+  this.getUrlParams = getUrlParams;
 
   /**
    * Returns a single URL parameter
-   *
-   * @returns {String}
+   * @param {string} parameter - The parameter name to get
+   * @returns {string|null}
    */
-  this.getUrlParam = function (parameter) {
-    var parameters = this.getUrlParams();
-    return typeof parameters[parameter] === "undefined"
-      ? null
-      : parameters[parameter];
-  };
+  this.getUrlParam = getUrlParam;
 
   /**
    * Returns the authenticated user
