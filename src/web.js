@@ -10,6 +10,7 @@ const {
   getLanguage,
   setLanguage
 } = require('./core/auth');
+const createNavigation = require('./core/navigation');
 
 // Config class
 function Config() {
@@ -153,53 +154,23 @@ function Initialize() {
     return setLanguage(language, Registry);
   };
 
+  // Initialize navigation
+  const navigation = createNavigation(Config);
+  
   /**
    * Redirects the user to the specified URL
    *
    * Options:
    * - target = _blank - will open a new window
    *
-   * @param {*} url
-   * @param {*} data
-   * @param {*} options
-   * @returns
+   * @param {string} url - The URL to navigate to
+   * @param {Object} [data] - Query parameters to append to the URL
+   * @param {Object} [options] - Navigation options
+   * @param {string} [options.target] - The target for the navigation (e.g., '_blank')
+   * @returns {boolean} - False to prevent default link behavior
    */
-  this.to = function (url, data, options) {
-    if (url.match("^http://") || url.match("^https://")) {
-      // External url
-    } else {
-      var url = rtrim(Config.getRootUrl(), ["/"]) + "/" + ltrim(url, ["/"]);
-    }
-
-    var queryString =
-      typeof data === "undefined"
-        ? ""
-        : Object.keys(data)
-            .map((key) => {
-              return (
-                encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
-              );
-            })
-            .join("&");
-
-    if (queryString.length > 0) {
-      url = url + (url.indexOf("?") < 0 ? "?" : "&") + queryString;
-    }
-
-    var options = typeof options === "undefined" ? {} : options;
-
-    if (options.target === "_blank") {
-      var link = document.createElement("a");
-      link.href = url;
-      link.target = "_blank";
-      link.style.display = "none";
-      document.body.appendChild(link);
-      document.body.lastElementChild.click();
-    } else {
-      window.location.href = url;
-    }
-
-    return false; // otherwise links will be triggered
+  this.to = function(url, data, options) {
+    return navigation.navigateTo(url, data, options);
   };
 
   // Initialize pub/sub
