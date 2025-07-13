@@ -1,3 +1,6 @@
+// Import utility functions
+const { rtrim, ltrim } = require('./core/utils');
+
 function Config() {
   this.getUniqueId = function () {
     return typeof APP_ID == "undefined"
@@ -268,21 +271,7 @@ function Initialize() {
     return false;
   };
 
-  function rtrim(str, charlist) {
-    charlist = !charlist
-      ? " \\s\u00A0"
-      : (charlist + "").replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, "\\$1");
-    var re = new RegExp("[" + charlist + "]+$", "g");
-    return (str + "").replace(re, "");
-  }
-
-  function ltrim(str, charlist) {
-    charlist = !charlist
-      ? " \\s\u00A0"
-      : (charlist + "").replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, "$1");
-    var re = new RegExp("^[" + charlist + "]+", "g");
-    return (str + "").replace(re, "");
-  }
+  // Utility functions are now imported from core/utils.js
 }
 
 // Import Registry from the external package
