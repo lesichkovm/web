@@ -1,165 +1,174 @@
-const oldWindowLocation = window.location
+// Mock window.location
+const originalLocation = window.location;
 
-// beforeAll(() => {
-//     delete window.location
-
-//     window.location = Object.defineProperties(
-//         {},
-//         {
-//             ...Object.getOwnPropertyDescriptors(oldWindowLocation),
-//             href: {
-//                 configurable: true,
-//                 value: jest.fn(),
-//             },
-//         },
-//     )
-// })
-// beforeEach(() => {
-//     window.location.href.mockReset()
-// })
-// afterAll(() => {
-//     // restore `window.location` to the original `jsdom`
-//     // `Location` object
-//     window.location = oldWindowLocation
-// })
-
-test('$$ is initialized', () => {
-    require('../web'); // This module has a side-effect
-
-    // Set up our document body
-    // document.body.innerHTML =
-    //   '<div>' +
-    //   '  <span id="username" />' +
-    //   '  <button id="button" />' +
-    //   '</div>';
-    //expect($$).toStrictEqual({});
-    expect(typeof $$).toBe("object")
-});
-
-
-test('$$ has get and set methods', () => {
-    require('../web'); // This module has a side-effect
-    expect(typeof $$.get).toBe("function")
-    expect(typeof $$.set).toBe("function")
-
-    $$.set("TEST_KEY", "TEST_VALUE");
-    expect($$.get("TEST_KEY")).toBe("TEST_VALUE")
-});
-
-test('$$ has getAuthUser and setAuthUser methods', () => {
-    require('../web'); // This module has a side-effect
-    expect(typeof $$.getAuthUser).toBe("function")
-    expect(typeof $$.setAuthUser).toBe("function")
-
-    $$.setAuthUser("TEST_USER_ID");
-    expect($$.getAuthUser()).toBe("TEST_USER_ID")
-});
-
-test('$$ has getAuthToken and setAuthToken methods', () => {
-    require('../web'); // This module has a side-effect
-    expect(typeof $$.getAuthToken).toBe("function")
-    expect(typeof $$.setAuthToken).toBe("function")
-
-    $$.setAuthToken("TEST_AUTH_TOKEN");
-    expect($$.getAuthToken()).toBe("TEST_AUTH_TOKEN")
-});
-
-test('$$ has getLanguage and setLanguage methods', () => {
-    require('../web'); // This module has a side-effect
-    expect(typeof $$.getLanguage).toBe("function")
-    expect(typeof $$.setLanguage).toBe("function")
-
-    $$.setLanguage("EN_GB");
-    expect($$.getLanguage()).toBe("EN_GB")
-});
-
-test('$$ has getUrl methods', () => {
-    Object.defineProperty(window, "location", {
-        value: {
-            href: "http://example.com"
-        },
-        writable: true
+describe('WebJS Tests', () => {
+    beforeAll(() => {
+        // Mock the global config
+        global.APP_ID = 'test-app';
+        global.WEBSITE_URL = 'http://example.com';
+        global.API_URL = 'http://api.example.com';
+        
+        // Mock window.location
+        delete window.location;
+        window.location = {
+            ...originalLocation,
+            href: 'http://example.com?invoice_id=324&invoice_total=12.00',
+            protocol: 'http:',
+            hostname: 'example.com',
+            port: '',
+            search: '?invoice_id=324&invoice_total=12.00',
+            host: 'example.com',
+            origin: 'http://example.com'
+        };
+        
+        // Load the module
+        require('../src/web');
     });
 
-    expect(typeof $$.getUrl).toBe("function")
-
-    expect($$.getUrl()).toBe("http://example.com")
-});
-
-
-test('$$ has getUrlParam method', () => {
-    Object.defineProperty(window, "location", {
-        value: {
-            href: "http://example.com?invoice_id=324",
-            search: "?invoice_id=324&invoice_total=12.00"
-        },
-        writable: true
+    afterAll(() => {
+        // Restore window.location
+        window.location = originalLocation;
     });
 
-    expect(typeof $$.getUrlParam).toBe("function")
-
-    expect($$.getUrlParam("invoice_id")).toBe("324")
-});
-
-test('$$ has getUrlParams method', () => {
-    Object.defineProperty(window, "location", {
-        value: {
-            href: "http://example.com?invoice_id=324",
-            search: "?invoice_id=324&invoice_total=12.00"
-        },
-        writable: true
+    test('$$ is initialized', () => {
+        expect(window.$$).toBeDefined();
+        expect(window.$$).toBe(window.WebJS);
+        expect(typeof $$).toBe('object');
     });
 
-    expect(typeof $$.getUrlParams).toBe("function")
+    test('$$ has get and set methods', () => {
+        expect(typeof $$.get).toBe('function');
+        expect(typeof $$.set).toBe('function');
 
-    expect($$.getUrlParams()).toEqual({ "invoice_id": "324", "invoice_total": "12.00" })
-});
-
-test('$$ has to method', () => {
-    Object.defineProperty(window, "location", {
-        value: {
-            href: "http://example.com?invoice_id=324",
-            search: "?invoice_id=324&invoice_total=12.00"
-        },
-        writable: true
+        $$.set('TEST_KEY', 'TEST_VALUE');
+        expect($$.get('TEST_KEY')).toBe('TEST_VALUE');
     });
 
-    expect(typeof $$.to).toBe("function")
+    test('$$ has getAuthUser and setAuthUser methods', () => {
+        expect(typeof $$.getAuthUser).toBe('function');
+        expect(typeof $$.setAuthUser).toBe('function');
 
-    $$.to("http://yahoo.com")
-    expect(window.location.href).toEqual("http://yahoo.com")
-
-    document.body.innerHTML =
-        '<div>' +
-        '  <span id="username" />' +
-        '  <button id="button" />' +
-        '</div>';
-
-    $$.to("http://google.com", {}, {
-        target: "_blank"
+        $$.setAuthUser('TEST_USER_ID');
+        expect($$.getAuthUser()).toBe('TEST_USER_ID');
     });
 
-    expect(document.body.innerHTML).toContain("http://google.com")
+    test('$$ has getAuthToken and setAuthToken methods', () => {
+        expect(typeof $$.getAuthToken).toBe('function');
+        expect(typeof $$.setAuthToken).toBe('function');
 
+        $$.setAuthToken('TEST_AUTH_TOKEN');
+        expect($$.getAuthToken()).toBe('TEST_AUTH_TOKEN');
+    });
 
-    $$.to("/auth");
+    test('$$ has getLanguage and setLanguage methods', () => {
+        expect(typeof $$.getLanguage).toBe('function');
+        expect(typeof $$.setLanguage).toBe('function');
 
-    expect(window.location.href).toContain("/auth")
-});
+        $$.setLanguage('EN_GB');
+        expect($$.getLanguage()).toBe('EN_GB');
+    });
 
-test('$$ pubsub', () => {
-    expect(typeof $$.publish).toBe("function")
-    expect(typeof $$.subscribe).toBe("function")
+    test('$$ has getUrl methods', () => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                href: 'http://example.com',
+                search: '',
+                protocol: 'http:',
+                hostname: 'example.com',
+                port: '',
+                host: 'example.com',
+                origin: 'http://example.com'
+            },
+            writable: true
+        });
 
-    let topName = null
-    function world(topic, args) {
-        topName = args
-    }
-    $$.subscribe("hello", world)
-    isPublished = $$.publish("hello", "Tomas")
+        expect(typeof $$.getUrl).toBe('function');
+        expect($$.getUrl()).toBe('http://example.com');
+    });
 
-    expect(isPublished).toEqual(true)
-    setTimeout(function () {
-        expect(topName).toEqual("Tomas")
-    }, 4);
+    test('$$ has getUrlParam method', () => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                href: 'http://example.com?invoice_id=324',
+                search: '?invoice_id=324&invoice_total=12.00',
+                protocol: 'http:',
+                hostname: 'example.com',
+                port: '',
+                host: 'example.com',
+                origin: 'http://example.com'
+            },
+            writable: true
+        });
+
+        expect(typeof $$.getUrlParam).toBe('function');
+        expect($$.getUrlParam('invoice_id')).toBe('324');
+    });
+
+    test('$$ has getUrlParams method', () => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                href: 'http://example.com?invoice_id=324',
+                search: '?invoice_id=324&invoice_total=12.00',
+                protocol: 'http:',
+                hostname: 'example.com',
+                port: '',
+                host: 'example.com',
+                origin: 'http://example.com'
+            },
+            writable: true
+        });
+
+        expect(typeof $$.getUrlParams).toBe('function');
+        expect($$.getUrlParams()).toEqual({ invoice_id: '324', invoice_total: '12.00' });
+    });
+
+    test('$$ has to method', () => {
+        delete window.location;
+        window.location = {
+            href: 'http://example.com?invoice_id=324',
+            search: '?invoice_id=324&invoice_total=12.00',
+            protocol: 'http:',
+            hostname: 'example.com',
+            port: '',
+            host: 'example.com',
+            origin: 'http://example.com',
+            assign: jest.fn()
+        };
+
+        expect(typeof $$.to).toBe('function');
+        
+        // Test URL navigation
+        $$.to('http://yahoo.com');
+        expect(window.location.href).toBe('http://yahoo.com');
+        
+        // Test with target _blank
+        document.body.innerHTML = `
+            <div>
+                <span id="username"></span>
+                <button id="button"></button>
+            </div>`;
+
+        $$.to('http://google.com', {}, { target: '_blank' });
+        expect(document.body.innerHTML).toContain('http://google.com');
+        
+        // Test relative URL
+        $$.to('/auth');
+        expect(window.location.href).toBe('http://example.com/auth');
+    });
+
+    test('$$ pubsub', (done) => {
+        expect(typeof $$.publish).toBe('function');
+        expect(typeof $$.subscribe).toBe('function');
+
+        let topName = null;
+        function world(topic, args) {
+            topName = args;
+            expect(topName).toBe('Tomas');
+            done();
+        }
+        
+        $$.subscribe('hello', world);
+        const isPublished = $$.publish('hello', 'Tomas');
+        expect(isPublished).toBe(true);
+    });
 });
