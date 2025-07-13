@@ -1,12 +1,14 @@
 {
-  "name": "web",
+  "name": "@lesichkovm/web",
   "version": "2.7.1",
   "description": "",
   "__main": "index.js",
+  "main": "src/web.js",
   "scripts": {
     "test": "jest",
-    "build": "node esbuild.config.js",
-    "build": "uglifyjs --compress --mangle -- web.js > ./dist/web.js"
+    "prebuild": "if not exist dist mkdir dist",
+    "build": "node src/esbuild.config.js",
+    "postbuild": "uglifyjs --compress --mangle --output ./dist/web.min.js -- ./dist/web.bundle.js"
   },
   "author": "",
   "license": "MIT",

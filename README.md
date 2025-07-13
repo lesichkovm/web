@@ -1,51 +1,67 @@
-# WebJS #
+# WebJS
 
 ![tests](https://github.com/lesichkovm/web/workflows/tests/badge.svg)
 
-WebJS is a framework for buiding standard multipage web applications.
+WebJS is a framework for building standard multipage web applications. It includes RegistryJS for persistent storage and comes pre-minified for production use.
 
-## Installation Using CDN ##
+## Quick Start
 
-Step 1) Create a file **config.js**
+### 1. Create a Configuration File
+
+Create a `config.js` file with your application settings:
 
 ```js
+// config.js
 var APP_ID = "";      // Your APP unique ID (optional)
 var WEBSITE_URL = ""; // Your website root URL
 var API_URL = "";     // Your website API URL (optional)
+
+// Auto-configure for local development
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "") {
-    WEBSITE_URL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
+    WEBSITE_URL = window.location.protocol + '//' + window.location.hostname + 
+                 (window.location.port ? ':' + window.location.port : '');
 }
 ```
 
+### 2. Include WebJS in Your Project
+
+#### Option 1: CDN (Recommended for Production)
 
 ```html
-<!-- Required: Configuration -->
+<!-- Load configuration first -->
 <script src="config.js"></script>
 
-<!-- WebJS (includes RegistryJS) -->
+<!-- Load WebJS (minified production build) -->
 <script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/dist/web.min.js"></script>
 ```
 
-### Alternative Installation Methods
+#### Option 2: ES Modules
 
-#### Via CDN (ES Modules)
 ```html
 <script type="module">
   import 'https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/dist/web.min.js';
-  // Use WebJS via window.WebJS
+  // Access WebJS via window.WebJS
 </script>
 ```
 
-#### Via npm
+#### Option 3: npm Package
+
 ```bash
 npm install @lesichkovm/web
 ```
 
-Then in your JavaScript:
+Then in your application:
+
 ```javascript
 import '@lesichkovm/web';
-// Use WebJS via window.WebJS
+// Access WebJS via window.WebJS
 ```
+
+## Production Notes
+
+- Always use `web.min.js` in production for better performance.
+- The minified version includes all dependencies (like RegistryJS) in a single file.
+- Source maps are available for debugging in development.
 
 ## Manual Installation ##
 
