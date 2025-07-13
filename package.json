@@ -6,7 +6,7 @@
   "main": "src/web.js",
   "scripts": {
     "test": "jest",
-    "prebuild": "if not exist dist mkdir dist",
+    "prebuild": "node -e \"const fs = require('fs'); if (!fs.existsSync('dist')) fs.mkdirSync('dist');\"",
     "build": "node src/esbuild.config.js",
     "postbuild": "uglifyjs --compress --mangle --output ./dist/web.min.js -- ./dist/web.bundle.js"
   },
