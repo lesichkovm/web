@@ -21,8 +21,11 @@ Step 2) Add to your webpage
 
 ```html
 <script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@2.7.0/bin/web.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/registryjs@latest/bin/registry.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/bin/web.js"></script>
 ```
+
+Note: This package now depends on the [@lesichkovm/registryjs](https://github.com/lesichkovm/registryjs) package.
 
 ## Manual Installation ##
 
@@ -37,20 +40,24 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || lo
 }
 ```
 
-Step 2) Download the **web.js** library locally and add to your webpage
+Step 2) Download the **registry.js** and **web.js** libraries locally and add to your webpage
 
 ```html
 <script src="config.js"></script>
+<script src="registry.js"></script>
 <script src="web.js"></script>
 ```
 
 Hint: Alternatively you may want to download automatically using Gulp
 
 ```javascript
-gulp.task('web', function (done) {
-    var url = "https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/bin/web.js";
-
-    download(url)
+gulp.task('dependencies', function (done) {
+    // Download Registry.js
+    download("https://cdn.jsdelivr.net/gh/lesichkovm/registryjs@latest/bin/registry.js")
+        .pipe(gulp.dest("js/"));
+        
+    // Download Web.js
+    download("https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/bin/web.js")
         .pipe(gulp.dest("js/"));
 
     done();

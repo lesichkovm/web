@@ -1,6 +1,6 @@
 {
   "name": "web",
-  "version": "1.0.0",
+  "version": "2.7.1",
   "description": "",
   "__main": "index.js",
   "scripts": {
@@ -16,5 +16,8 @@
   },
   "jest": {
     "testEnvironment": "jsdom"
+  },
+  "dependencies": {
+    "@lesichkovm/registryjs": "^0.3.0"
   }
 }
