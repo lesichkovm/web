@@ -25,6 +25,9 @@ function ConfigUtils() {
 // https://www.npmjs.com/package/@lesichkovm/registryjs
 const Registry = require('@lesichkovm/registryjs');
 
+// Import loadWidgets
+const { loadWidgets } = require('./loadWidgets');
+
 
 /**
  * Main application class
@@ -43,6 +46,9 @@ class Initialize {
     
     // Initialize pub/sub
     this.pubsub = createPubSub();
+    
+    // Initialize loadWidgets
+    this.loadWidgets = loadWidgets;
   }
 
   /**
