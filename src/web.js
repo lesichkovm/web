@@ -27,32 +27,42 @@ const Registry = require('@lesichkovm/registryjs');
 
 
 /**
- * Initialize
- * @type $$
+ * Main application class
+ * @class Initialize
+ * @type {$$
  */
-function Initialize() {
-  this.debug = true;
+class Initialize {
+  constructor() {
+    this.debug = true;
+    
+    // Initialize registry
+    this.registry = new Registry(getUniqueId());
+    
+    // Initialize navigation with the root URL
+    this.navigation = createNavigation({ getRootUrl });
+    
+    // Initialize pub/sub
+    this.pubsub = createPubSub();
+  }
+
+  /**
+   * Retrieves a key value from the registry
+   * @param {String} key
+   * @returns {Object}
+   */
+  get(key) {
+    return this.registry.get(key);
+  }
 
   /**
    * Stores a key-value pair to the registry
-   *
    * @param {String} key
    * @param {Object} value
    * @returns {Object}
    */
-  this.get = function (key) {
-    return this.registry.get(key);
-  };
-
-  /**
-   * Retrieves a key value from the registry
-   *
-   * @param {String} key
-   * @returns {Object}
-   */
-  this.set = function (key, value) {
+  set(key, value) {
     return this.registry.set(key, value);
-  };
+  }
   
   /**
    * Returns the API URL
@@ -60,81 +70,86 @@ function Initialize() {
    * generate one, assuming the API is hosted on the same domain {domain}/api
    * @returns {String}
    */
-  this.getApiUrl = getApiUrl;
+  getApiUrl() {
+    return getApiUrl();
+  }
 
   /**
    * Returns the current page URL
    * @returns {string}
    */
-  this.getUrl = getUrl;
+  getUrl() {
+    return getUrl();
+  }
 
   /**
    * Returns the URL parameters as an object
    * @returns {Object}
    */
-  this.getUrlParams = getUrlParams;
+  getUrlParams() {
+    return getUrlParams();
+  }
 
   /**
    * Returns a single URL parameter
    * @param {string} parameter - The parameter name to get
    * @returns {string|null}
    */
-  this.getUrlParam = getUrlParam;
+  getUrlParam(parameter) {
+    return getUrlParam(parameter);
+  }
 
   /**
    * Returns the authenticated user
    * @returns {Object|null} - The authenticated user or null if not authenticated
    */
-  this.getAuthUser = function() {
+  getAuthUser() {
     return getAuthUser(this.registry);
-  };
+  }
 
   /**
    * Sets the authenticated user
    * @param {Object} user - The user object to set
    * @returns {Object} - The set user
    */
-  this.setAuthUser = function(user) {
+  setAuthUser(user) {
     return setAuthUser(user, this.registry);
-  };
+  }
 
   /**
    * Returns the authentication token
    * @returns {string} - The authentication token
    */
-  this.getAuthToken = function() {
+  getAuthToken() {
     return getAuthToken(this.registry);
-  };
+  }
 
   /**
    * Sets the authentication token
    * @param {string} token - The token to set
    * @returns {string} - The set token
    */
-  this.setAuthToken = function(token) {
+  setAuthToken(token) {
     return setAuthToken(token, this.registry);
-  };
+  }
   
   /**
    * Returns the current language
    * @returns {string} - The current language code (default: 'en')
    */
-  this.getLanguage = function() {
+  getLanguage() {
     return getLanguage(this.registry);
-  };
+  }
 
   /**
    * Sets the current language
    * @param {string} language - The language code to set
    * @returns {string} - The set language code
    */
-  this.setLanguage = function(language) {
+  setLanguage(language) {
     return setLanguage(language, this.registry);
-  };
+  }
 
-  // Initialize navigation with the root URL
-  const navigation = createNavigation({ getRootUrl });
-  
   /**
    * Redirects the user to the specified URL
    *
@@ -147,20 +162,37 @@ function Initialize() {
    * @param {string} [options.target] - The target for the navigation (e.g., '_blank')
    * @returns {boolean} - False to prevent default link behavior
    */
-  this.to = function(url, data, options) {
-    return navigation.navigateTo(url, data, options);
-  };
+  to(url, data, options) {
+    return this.navigation.navigateTo(url, data, options);
+  }
 
-  // Initialize pub/sub
-  const pubsub = createPubSub();
-  
-  // Expose pub/sub methods
-  this.publish = pubsub.publish.bind(pubsub);
-  this.subscribe = pubsub.subscribe.bind(pubsub);
-  this.unsubscribe = pubsub.unsubscribe.bind(pubsub);
+  /**
+   * Publishes an event to all subscribers
+   * @param {string} event - The event name to publish
+   * @param {*} data - The data to pass to subscribers
+   */
+  publish(event, data) {
+    return this.pubsub.publish(event, data);
+  }
 
-  // Initialize registry
-  this.registry = new Registry(getUniqueId());
+  /**
+   * Subscribes to an event
+   * @param {string} event - The event name to subscribe to
+   * @param {Function} callback - The function to call when the event is published
+   * @returns {Function} - A function to unsubscribe
+   */
+  subscribe(event, callback) {
+    return this.pubsub.subscribe(event, callback);
+  }
+
+  /**
+   * Unsubscribes from an event
+   * @param {string} event - The event name to unsubscribe from
+   * @param {Function} callback - The function to remove from the subscribers list
+   */
+  unsubscribe(event, callback) {
+    return this.pubsub.unsubscribe(event, callback);
+  }
 }
 
 // Initialize components
