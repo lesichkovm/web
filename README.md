@@ -13,6 +13,7 @@ WebJS provides a set of utility functions for common web development tasks:
 - **URL Utilities**: Parse and manipulate URLs and query parameters
 - **Auth Helpers**: Simple functions for managing authentication state
 - **Event System**: Lightweight pub/sub for component communication
+- **Widget Loading**: Dynamically load and execute widget content
 - **Persistent Key-Value Store**: Simple storage that persists across page reloads
 - **Tiny Footprint**: No external dependencies, just pure JavaScript
 
@@ -40,6 +41,39 @@ import '@lesichkovm/web';
 
 
 ## Basic Usage
+
+### Loading Widgets
+
+WebJS makes it easy to dynamically load and execute widget content from external URLs:
+
+```html
+<!-- Add widgets to your HTML -->
+<div data-widget-url="/widgets/user-profile">Loading user profile...</div>
+<div data-widget-url="/widgets/recent-activity">Loading recent activity...</div>
+
+<!-- Initialize widgets when the DOM is ready -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Load all widgets on the page
+    $$.loadWidgets();
+  });
+</script>
+```
+
+#### How It Works
+
+1. Finds all elements with `data-widget-url` attribute
+2. Fetches the content from the specified URL
+3. Injects the HTML content into the element
+4. Executes any scripts included in the widget content
+
+#### Error Handling
+
+If a widget fails to load, an error will be logged to the console:
+
+```
+Error loading widget: /widgets/user-profile Error: Network Error
+```
 
 ### Accessing WebJS
 
