@@ -22,8 +22,11 @@ WebJS provides a set of utility functions for common web development tasks:
 ### Using CDN (Recommended)
 
 ```html
-<!-- Load WebJS from CDN -->
+<!-- Load latest WebJS from CDN -->
 <script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@latest/dist/web.min.js"></script>
+
+<!-- Load specific version of WebJS from CDN -->
+<script src="https://cdn.jsdelivr.net/gh/lesichkovm/web@v2.9.0/dist/web.min.js"></script>
 ```
 
 ### npm Package
