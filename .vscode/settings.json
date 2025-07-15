@@ -1,0 +1,8 @@
+{
+  "jest.pathToJest": "npm test --",
+  "jest.autoEnable": true,
+  "jest.showCoverageOnLoad": true,
+  "jest.debugCodeLens.showWhenTestStateIn": ["pass", "fail", "unknown"],
+  "jest.jestCommandLine": "npm test --",
+  "jest.jestConfigPath": "jest.config.js"
+}
