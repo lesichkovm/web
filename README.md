@@ -6,6 +6,10 @@ WebJS is a lightweight framework for building standard multipage web application
 All utilities are accessible through a simple `$$` global object.
 It brings back the joy of web development.
 
+## Documentation
+
+You can view the detailed documentation [here](https://html-preview.github.io/?https://github.com/lesichkovm/web/blob/master/docs/index.html).
+
 ## Features
 
 WebJS provides a set of utility functions for common web development tasks:
