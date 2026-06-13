@@ -13,10 +13,11 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "esbuild": "^0.25.6",
-    "jest": "^30.2.0",
-    "qunit": "^2.17.2",
-    "uglify-js": "^3.14.4"
+    "esbuild": "^0.28.1",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
+    "qunit": "^2.26.0",
+    "uglify-js": "^3.19.3"
   },
   "jest": {
     "testEnvironment": "jsdom"

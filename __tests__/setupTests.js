@@ -1,6 +1,10 @@
 // Setup file for Jest tests
 // This file runs before each test file
 
+const { TextEncoder, TextDecoder } = require('util');
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
 // Mock any global objects needed for testing
 global.$$ = {};
 
