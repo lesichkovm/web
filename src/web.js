@@ -28,6 +28,9 @@ const Registry = require('@lesichkovm/registryjs');
 // Import loadWidgets
 const { loadWidgets } = require('./loadWidgets');
 
+// Import loadBackgroundImages
+const { loadBackgroundImages } = require('./loadBackgroundImages');
+
 
 /**
  * Main application class
@@ -49,6 +52,9 @@ class Initialize {
     
     // Initialize loadWidgets
     this.loadWidgets = loadWidgets;
+
+    // Initialize loadBackgroundImages
+    this.loadBackgroundImages = loadBackgroundImages;
   }
 
   /**
