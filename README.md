@@ -17,6 +17,10 @@ WebJS provides a set of utility functions for common web development tasks:
 - **Persistent Key-Value Store**: Simple storage that persists across page reloads
 - **Tiny Footprint**: No external dependencies, just pure JavaScript
 
+## Documentation
+
+You can view the detailed documentation [here](https://html-preview.github.io/?https://github.com/lesichkovm/web/blob/master/docs/index.html).
+
 ## Installation
 
 ### Using CDN (Recommended)
